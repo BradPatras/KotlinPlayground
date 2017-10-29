@@ -37,5 +37,6 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.google.dagger:dagger:2.12'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     kapt 'com.google.dagger:dagger-compiler:2.12'
 }

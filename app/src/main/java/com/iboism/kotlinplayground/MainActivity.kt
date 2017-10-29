@@ -13,13 +13,14 @@ import javax.inject.Named
 
 @Module
 class MainActivity : AppCompatActivity() {
-
+    private lateinit var imageModels: List<ImageModel>
+    private lateinit var pageTitle: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener { _ ->
             nextPhoto()
         }
     }
@@ -28,6 +29,13 @@ class MainActivity : AppCompatActivity() {
         //TODO
     }
 
+    // ImageModelRequester Providers
     @Provides @Named("baseUrl") fun provideBaseUrl(): String = "https://api.myjson.com/"
 
+    @Provides fun provideRequesterResponseHandler(): (ImagesModel?) -> Unit {
+        return {
+            it?.images?.let { responseImages -> this.imageModels = responseImages }
+            it?.title?.let { responseTitle -> this.pageTitle = responseTitle }
+        }
+    }
 }
