@@ -13,9 +13,13 @@ import javax.inject.Inject
 /**
  * Created by Brad on 10/29/2017.
  */
+interface ImageModelResponseHandler {
+    fun onResponse(imagesModel: ImagesModel?)
+}
+
 class ImageModelRequester @Inject constructor(
         val baseUrl: String,
-        val mainActivity: MainActivity) {
+        val responseHandler: ImageModelResponseHandler) {
 
     fun start() {
         val rf = Retrofit.Builder()
@@ -26,19 +30,19 @@ class ImageModelRequester @Inject constructor(
         val call: Call<ImagesModel> = service.listImages()
         call.enqueue(object: Callback<ImagesModel> {
             override fun onResponse(call: Call<ImagesModel>?, response: Response<ImagesModel>?) {
-                mainActivity.requesterResponseHandler()(response?.body())
+                responseHandler.onResponse(response?.body())
             }
 
             override fun onFailure(call: Call<ImagesModel>?, t: Throwable?) {
-
+                //TODO do something responsible here. eventually.
             }
-        }
-
-        )
+        })
     }
 }
 
 interface ImageModelService {
     @GET("bins/1finvn") fun listImages(): Call<ImagesModel>
 }
+
+
 
