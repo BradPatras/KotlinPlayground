@@ -1,5 +1,7 @@
 package com.iboism.kotlinplayground
 
+import dagger.Component
+import dagger.Module
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,7 +15,7 @@ import javax.inject.Inject
  */
 class ImageModelRequester @Inject constructor(
         val baseUrl: String,
-        val responseHandler: (ImagesModel?) -> Unit) {
+        val mainActivity: MainActivity) {
 
     fun start() {
         val rf = Retrofit.Builder()
@@ -24,7 +26,7 @@ class ImageModelRequester @Inject constructor(
         val call: Call<ImagesModel> = service.listImages()
         call.enqueue(object: Callback<ImagesModel> {
             override fun onResponse(call: Call<ImagesModel>?, response: Response<ImagesModel>?) {
-                responseHandler(response?.body())
+                mainActivity.requesterResponseHandler()(response?.body())
             }
 
             override fun onFailure(call: Call<ImagesModel>?, t: Throwable?) {
@@ -39,3 +41,4 @@ class ImageModelRequester @Inject constructor(
 interface ImageModelService {
     @GET("bins/1finvn") fun listImages(): Call<ImagesModel>
 }
+
