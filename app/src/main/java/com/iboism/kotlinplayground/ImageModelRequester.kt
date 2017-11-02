@@ -13,13 +13,14 @@ import javax.inject.Inject
 /**
  * Created by Brad on 10/29/2017.
  */
-interface ImageModelResponseHandler {
-    fun onResponse(imagesModel: ImagesModel?)
-}
 
 class ImageModelRequester @Inject constructor(
         val baseUrl: String,
-        val responseHandler: ImageModelResponseHandler) {
+        val responseHandler: ResponseHandler) {
+
+    interface ResponseHandler {
+        fun onResponse(imagesModel: ImagesModel?)
+    }
 
     fun start() {
         val rf = Retrofit.Builder()
@@ -38,10 +39,6 @@ class ImageModelRequester @Inject constructor(
             }
         })
     }
-}
-
-interface ImageModelService {
-    @GET("bins/1finvn") fun listImages(): Call<ImagesModel>
 }
 
 

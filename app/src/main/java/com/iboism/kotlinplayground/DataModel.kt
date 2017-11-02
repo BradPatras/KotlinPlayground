@@ -1,14 +1,20 @@
 package com.iboism.kotlinplayground
 
-import javax.inject.Inject
+import retrofit2.Call
+import retrofit2.http.GET
 
 /**
  * Created by Brad on 10/29/2017.
  */
-data class ImageModel @Inject constructor(
+data class ImageModel (
         val url: String,
         val description: String)
 
-data class ImagesModel @Inject constructor(
+data class ImagesModel (
         val images: List<ImageModel>,
         val title: String)
+
+
+interface ImageModelService {
+    @GET("bins/1finvn") fun listImages(): Call<ImagesModel>
+}
