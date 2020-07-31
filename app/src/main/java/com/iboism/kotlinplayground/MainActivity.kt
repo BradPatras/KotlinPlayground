@@ -1,7 +1,7 @@
 package com.iboism.kotlinplayground
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.WindowManager
 import com.squareup.picasso.Picasso
 
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun nextPhoto() {
-        Picasso.with(applicationContext).load(imageModels[selectedIndex].url).into(center_image)
+        Picasso.get().load(imageModels[selectedIndex].url).into(center_image)
         description_label.text = imageModels[selectedIndex].description
         selectedIndex++
     }
