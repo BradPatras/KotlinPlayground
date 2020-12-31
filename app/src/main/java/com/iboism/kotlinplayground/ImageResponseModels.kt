@@ -13,8 +13,3 @@ data class ImageModel (
 data class ImagesModel (
         val images: List<ImageModel>,
         val title: String)
-
-
-interface ImageModelService {
-    @GET("bins/1finvn") fun listImages(): Call<ImagesModel>
-}

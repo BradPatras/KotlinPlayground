@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit @Inject var imageModelRequester: ImageModelRequester
+    lateinit @Inject var imageRepository: ImagesRepository
 
     private var imageModels = emptyList<ImageModel>()
     private var selectedIndex = 0

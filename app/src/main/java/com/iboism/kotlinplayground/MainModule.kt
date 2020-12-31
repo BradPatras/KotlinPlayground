@@ -10,9 +10,6 @@ import dagger.Provides
 class MainModule(val responseHandler: ImageModelRequester.ResponseHandler) {
 
     @Provides
-    fun provideBaseUrl(): String { return "https://api.myjson.com/" }
-
-    @Provides
     fun provideResponseHandler(): ImageModelRequester.ResponseHandler { return responseHandler }
 
 }
