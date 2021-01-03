@@ -2,48 +2,38 @@ package com.iboism.kotlinplayground
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import android.view.WindowManager
+import androidx.lifecycle.coroutineScope
 import com.squareup.picasso.Picasso
+import com.iboism.kotlinplayground.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-import kotlinx.android.synthetic.main.content_main.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    lateinit @Inject var imageRepository: ImagesRepository
+    @Inject lateinit var imageRepository: ImagesRepository
 
+    private lateinit var binding: ActivityMainBinding
     private var imageModels = emptyList<ImageModel>()
     private var selectedIndex = 0
         get() { return field % imageModels.size }
 
-    private val responseHandler = object : ImageModelRequester.ResponseHandler {
-        override fun onResponse(imagesModel: ImagesModel?) {
-            imagesModel?.images?.let { responseImages -> imageModels = responseImages }
-            nextPhoto()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.centerLayout.setOnClickListener { _ -> nextPhoto() }
+
+        lifecycle.coroutineScope.launchWhenCreated {
+            imageModels = imageRepository.getImages().images
         }
     }
 
-    private val requesterComponent = DaggerRequesterComponent
-            .builder()
-            .mainModule(MainModule(responseHandler))
-            .build()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        center_layout.setOnClickListener { _ -> nextPhoto() }
-
-        requesterComponent.inject(this)
-
-        imageModelRequester.start()
-    }
-
-    fun nextPhoto() {
-        Picasso.get().load(imageModels[selectedIndex].url).into(center_image)
-        description_label.text = imageModels[selectedIndex].description
+    private fun nextPhoto() {
+        Picasso.get().load(imageModels[selectedIndex].url).into(binding.centerImage)
+        binding.descriptionLabel.text = imageModels[selectedIndex].description
         selectedIndex++
     }
 }
