@@ -3,13 +3,16 @@ package com.iboism.kotlinplayground
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
+import coil.annotation.ExperimentalCoilApi
 import coil.load
+import coil.transition.CrossfadeTransition
 import com.iboism.kotlinplayground.api.ImageModel
 import com.iboism.kotlinplayground.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 import javax.inject.Inject
 
+@ExperimentalCoilApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -25,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.centerLayout.setOnClickListener { _ -> nextPhoto() }
+        binding.centerImage.setOnClickListener { _ -> nextPhoto() }
 
         lifecycle.coroutineScope.launchWhenCreated {
             imageModels = imageRepository.getImages().images
@@ -35,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun nextPhoto() {
         binding.centerImage.load(imageModels[selectedIndex].url) {
-            crossfade(true)
+            transition(CrossfadeTransition(durationMillis = 600))
         }
         binding.descriptionLabel.text = imageModels[selectedIndex].description
         selectedIndex++

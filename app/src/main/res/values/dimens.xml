@@ -4,5 +4,5 @@
     <dimen name="margin_medium">14dp</dimen>
     <dimen name="margin_large">24dp</dimen>
     <dimen name="margin_larger">46dp</dimen>
-    <dimen name="description_font_size">12sp</dimen>
+    <dimen name="description_font_size">14sp</dimen>
 </resources>
