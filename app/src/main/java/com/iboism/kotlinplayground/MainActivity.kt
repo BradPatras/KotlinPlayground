@@ -3,7 +3,8 @@ package com.iboism.kotlinplayground
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
-import com.squareup.picasso.Picasso
+import coil.load
+import com.iboism.kotlinplayground.api.ImageModel
 import com.iboism.kotlinplayground.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,11 +29,14 @@ class MainActivity : AppCompatActivity() {
 
         lifecycle.coroutineScope.launchWhenCreated {
             imageModels = imageRepository.getImages().images
+            nextPhoto()
         }
     }
 
     private fun nextPhoto() {
-        Picasso.get().load(imageModels[selectedIndex].url).into(binding.centerImage)
+        binding.centerImage.load(imageModels[selectedIndex].url) {
+            crossfade(true)
+        }
         binding.descriptionLabel.text = imageModels[selectedIndex].description
         selectedIndex++
     }
